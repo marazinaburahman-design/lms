@@ -1,0 +1,1 @@
+const r=require('express').Router();const c=require('../controllers/batchController');const {protect,authorize}=require('../middleware/authMiddleware');r.use(protect);r.get('/',c.list);r.get('/:id',c.get);r.post('/',authorize('admin','staff'),c.create);r.patch('/:id',authorize('admin','staff'),c.update);r.delete('/:id',authorize('admin'),c.remove);module.exports=r;

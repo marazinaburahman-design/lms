@@ -1,0 +1,2 @@
+const mongoose = require('mongoose');
+module.exports = mongoose.model('Assignment', new mongoose.Schema({ title:{type:String,required:true}, description:String, course:{type:mongoose.Schema.Types.ObjectId,ref:'Course',required:true}, batch:{type:mongoose.Schema.Types.ObjectId,ref:'Batch'}, dueDate:Date, maxMarks:{type:Number,default:100}, createdBy:{type:mongoose.Schema.Types.ObjectId,ref:'User'} },{timestamps:true}));

@@ -1,0 +1,10 @@
+const r = require("express").Router();
+const { protect, authorize } = require("../middleware/authMiddleware");
+const Model = require("../models/Assignment");
+const c = require("../controllers/genericController");
+r.use(protect);
+r.get("/", c.list(Model, "course batch", { studentField: "_student_scope_disabled" }));
+r.post("/", authorize("admin", "staff", "teacher"), c.create(Model));
+r.patch("/:id", authorize("admin", "staff", "teacher"), c.update(Model));
+r.delete("/:id", authorize("admin", "staff"), c.remove(Model));
+module.exports = r;

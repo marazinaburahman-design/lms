@@ -1,0 +1,2 @@
+const mongoose = require('mongoose');
+module.exports = mongoose.model('Grade', new mongoose.Schema({ student:{type:mongoose.Schema.Types.ObjectId,ref:'Student',required:true}, assignment:{type:mongoose.Schema.Types.ObjectId,ref:'Assignment'}, course:{type:mongoose.Schema.Types.ObjectId,ref:'Course'}, marks:{type:Number,required:true,min:0}, maxMarks:{type:Number,required:true,min:0}, grade:String, feedback:String, gradedBy:{type:mongoose.Schema.Types.ObjectId,ref:'User'} },{timestamps:true}));

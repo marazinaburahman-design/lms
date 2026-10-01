@@ -1,0 +1,153 @@
+{
+  "info": {
+    "name": "LMS Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api" },
+    { "key": "token", "value": "" },
+    { "key": "studentId", "value": "" },
+    { "key": "enrollmentId", "value": "" },
+    { "key": "invoiceId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": { "method": "GET", "url": "{{baseUrl}}/health" }
+    },
+    {
+      "name": "Login Admin",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@lms.local\",\n  \"password\": \"Admin@123\"\n}"
+        },
+        "url": "{{baseUrl}}/auth/login"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set('token', pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Get Me",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/auth/me"
+      }
+    },
+    {
+      "name": "List Students",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/students"
+      }
+    },
+    {
+      "name": "Create Invoice",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"student\": \"{{studentId}}\",\n  \"enrollment\": \"{{enrollmentId}}\",\n  \"items\": [\n    {\"description\": \"Course fee - October 2026\", \"quantity\": 1, \"unitPrice\": 140000}\n  ],\n  \"discount\": 10000,\n  \"tax\": 0,\n  \"paidAmount\": 50000,\n  \"currency\": \"LKR\",\n  \"paymentMethod\": \"bank_transfer\",\n  \"paymentReference\": \"BANK-TEST-001\",\n  \"notes\": \"Demo invoice\"\n}"
+        },
+        "url": "{{baseUrl}}/invoices"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.collectionVariables.set('invoiceId', pm.response.json().invoice._id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pending Invoices",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/invoices?status=pending_approval"
+      }
+    },
+    {
+      "name": "Invoice Preview",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/invoices/{{invoiceId}}/preview"
+      }
+    },
+    {
+      "name": "Approve Invoice + Email/SMS",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": true,\n  \"sms\": true\n}"
+        },
+        "url": "{{baseUrl}}/invoices/{{invoiceId}}/approve"
+      }
+    },
+    {
+      "name": "Notifications",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/notifications"
+      }
+    },
+    {
+      "name": "Dashboard",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/dashboard/summary"
+      }
+    },
+    {
+      "name": "Test Email",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\"to\":\"your-email@example.com\"}" },
+        "url": "{{baseUrl}}/settings/test/email"
+      }
+    },
+    {
+      "name": "Test SMS",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": { "mode": "raw", "raw": "{\"to\":\"0771234567\"}" },
+        "url": "{{baseUrl}}/settings/test/sms"
+      }
+    }
+  ]
+}

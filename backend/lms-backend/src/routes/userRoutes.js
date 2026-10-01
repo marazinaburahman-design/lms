@@ -1,0 +1,1 @@
+const r=require('express').Router();const c=require('../controllers/userController');const {protect,authorize}=require('../middleware/authMiddleware');r.use(protect);r.get('/',authorize('admin'),c.list);r.get('/:id',authorize('admin'),c.get);r.patch('/:id',authorize('admin'),c.update);module.exports=r;

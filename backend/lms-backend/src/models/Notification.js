@@ -1,0 +1,2 @@
+const mongoose = require('mongoose');
+module.exports = mongoose.model('Notification', new mongoose.Schema({ recipient:{type:mongoose.Schema.Types.ObjectId,ref:'User'}, student:{type:mongoose.Schema.Types.ObjectId,ref:'Student'}, type:{type:String,enum:['invoice_approval','invoice_approved','invoice_rejected','system','reminder'],required:true}, title:{type:String,required:true}, message:{type:String,required:true}, entityType:String, entityId:mongoose.Schema.Types.ObjectId, read:{type:Boolean,default:false}, readAt:Date },{timestamps:true}));

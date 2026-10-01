@@ -1,0 +1,1 @@
+exports.nextNumber = async (Model, field, prefix) => { const year = new Date().getFullYear(); const last = await Model.findOne({[field]: new RegExp(`^${prefix}-${year}-`)}).sort({createdAt:-1}).lean(); const n = last ? parseInt(last[field].split('-').pop(),10)+1 : 1; return `${prefix}-${year}-${String(n).padStart(5,'0')}`; };

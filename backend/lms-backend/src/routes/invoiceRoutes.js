@@ -1,0 +1,13 @@
+const r = require("express").Router();
+const c = require("../controllers/invoiceController");
+const { protect, authorize } = require("../middleware/authMiddleware");
+r.use(protect);
+r.get("/", c.list);
+r.post("/", authorize("admin", "staff"), c.create);
+r.get("/:id", c.get);
+r.get("/:id/preview", c.preview);
+r.get("/:id/pdf", c.pdf);
+r.patch("/:id", authorize("admin", "staff"), c.update);
+r.post("/:id/reject", authorize("admin", "staff"), c.reject);
+r.post("/:id/approve", authorize("admin", "staff"), c.approve);
+module.exports = r;

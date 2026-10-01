@@ -1,0 +1,1 @@
+const r=require('express').Router();const c=require('../controllers/settingsController');const {protect,authorize}=require('../middleware/authMiddleware');r.use(protect,authorize('admin'));r.get('/',c.list);r.post('/test/email',c.testEmail);r.post('/test/sms',c.testSms);r.get('/:key',c.get);r.put('/:key',c.upsert);module.exports=r;

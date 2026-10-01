@@ -1,0 +1,1 @@
+exports.upload=(req,res)=>{if(!req.file)return res.status(400).json({success:false,message:'File is required'});res.status(201).json({success:true,file:{originalName:req.file.originalname,filename:req.file.filename,path:`/uploads/${req.file.filename}`,size:req.file.size,mimetype:req.file.mimetype}});};
