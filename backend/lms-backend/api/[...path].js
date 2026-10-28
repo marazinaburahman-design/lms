@@ -3,10 +3,14 @@ require("dotenv").config();
 function handleCorsPreflight(req, res) {
   if (req.method !== "OPTIONS") return false;
   const origin = req.headers.origin;
-  const allowedOrigins = (process.env.CLIENT_URL || "")
-    .split(",")
-    .map((value) => value.trim().replace(/\/$/, ""))
-    .filter(Boolean);
+  const productionClientOrigin = "https://lms-frontend-abdur-rahman7.vercel.app";
+  const allowedOrigins = [
+    ...(process.env.CLIENT_URL || "")
+      .split(",")
+      .map((value) => value.trim().replace(/\/$/, ""))
+      .filter(Boolean),
+    productionClientOrigin,
+  ];
 
   if (!origin || !allowedOrigins.includes(origin)) {
     res.statusCode = 403;
