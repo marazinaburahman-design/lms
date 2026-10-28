@@ -12,10 +12,14 @@ const app = express();
 app.set("trust proxy", 1);
 
 const isProd = process.env.NODE_ENV === "production";
-const allowedOrigins = (process.env.CLIENT_URL || "")
-  .split(",")
-  .map((s) => s.trim().replace(/\/$/, ""))
-  .filter(Boolean);
+const productionClientOrigin = "https://lms-frontend-abdur-rahman7.vercel.app";
+const allowedOrigins = [
+  ...(process.env.CLIENT_URL || "")
+    .split(",")
+    .map((s) => s.trim().replace(/\/$/, ""))
+    .filter(Boolean),
+  productionClientOrigin,
+];
 
 const corsOptions = {
   origin: (origin, callback) => {
